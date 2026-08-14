@@ -220,8 +220,31 @@ __marimo__/
 .streamlit/secrets.toml
 
 
-data/
+/data/**
+!/data/splits_1000_1200/
+!/data/splits_1000_1200/train.jsonl
+!/data/splits_1000_1200/meta.json
 scaffold-bpe
 glaude-rits.template
 GLM.md
 install-glaude-rits.sh
+
+# agent / tooling scaffolding — not part of the deliverable
+.claude/
+.factory/
+.refactory/
+
+# algo-discovery: Harbor per-run outputs (results, tokens, timestamps, trajectories)
+algo_discovery/jobs/
+# the hidden test split, staged into tests/ by run.sh at launch — never commit it
+algo_discovery/task/tests/test.jsonl
+
+# secrets — never commit the GLM proxy master key / LiteLLM key
+*.key
+.master.key
+MODEL_ENDPOINT.env
+glaude
+glaude-rits
+
+hfs_notes.md
+report.md

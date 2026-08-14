@@ -1,0 +1,34 @@
+{
+ "seed": 1234,
+ "test_frac": 0.2,
+ "char_band": {
+  "lo": 1000,
+  "hi": 1200,
+  "interval": "[lo, hi)"
+ },
+ "pool": "splits/train.jsonl + splits/test.jsonl (already deduped)",
+ "own_srcs": [
+  "golden_fineweb/labeled.jsonl"
+ ],
+ "public_rows_dropped": 17098,
+ "fields": [
+  "text",
+  "n_tokens",
+  "src"
+ ],
+ "rules": "own-data only (['golden_fineweb/labeled.jsonl']); keep 1000 <= len(text) < 1200; 20% of each source -> test",
+ "totals": {
+  "train": 17310,
+  "test": 4328,
+  "total": 21638,
+  "scanned": 356763
+ },
+ "per_source": [
+  {
+   "src": "golden_fineweb/labeled.jsonl",
+   "kept": 21638,
+   "train": 17310,
+   "test": 4328
+  }
+ ]
+}

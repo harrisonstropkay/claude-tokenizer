@@ -1,0 +1,25 @@
+schema_version = "1.4"
+
+[task]
+name = "algo-discovery/count-tokens"
+description = "Reconstruct Anthropic's count_tokens as approx_count_tokens(text) -> int."
+
+[metadata]
+
+[environment]
+# Prebuilt by run.sh from the repo root (needs the training split at build time).
+docker_image = "count-tokens-agent:latest"
+# Baseline for both phases; the agent may research online. The verifier phase
+# overrides this to no-network below, so scoring stays airgapped.
+network_mode = "public"
+
+[agent]
+timeout_sec = 36000.0  # 10 hours
+
+[verifier]
+# Default (shared) mode: after the agent finishes, Harbor uploads tests/ to /tests
+# in the agent's OWN container and runs test.sh there, then tears the box down.
+# The candidate can use anything the agent installed while online; scoring itself
+# is airgapped so the held-out labels can't leak and can't be fetched.
+timeout_sec = 7200.0  # 2 hours
+network_mode = "no-network"

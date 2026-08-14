@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Record a timestamped snapshot of the current approx_count_tokens.py.
+#
+# Run this each time you improve the function. Every snapshot is scored by the
+# verifier (against the hidden test set), so submitting early and often produces
+# a curve of accuracy vs. how far into the run you are. This is helpful. 
+set -euo pipefail
+
+SRC="${CANDIDATE_PATH:-/app/approx_count_tokens.py}"
+DIR="${SUBMISSIONS_DIR:-/app/submissions}"
+
+if [[ ! -f "$SRC" ]]; then
+  echo "submit: $SRC not found — nothing to submit" >&2
+  exit 1
+fi
+
+mkdir -p "$DIR"
+n=$(( $(find "$DIR" -maxdepth 1 -name 'submission_*.py' | wc -l) + 1 ))
+name=$(printf 'submission_%04d.py' "$n")
+
+# One clock read for both fields so the ISO string and epoch can't skew.
+read -r ts epoch < <(date -u +'%Y-%m-%dT%H:%M:%S.%6NZ %s.%6N')
+
+cp "$SRC" "$DIR/$name"
+printf '{"file": "%s", "ts": "%s", "epoch": %s}\n' "$name" "$ts" "$epoch" >> "$DIR/manifest.jsonl"
+echo "submit: recorded $name at $ts"
